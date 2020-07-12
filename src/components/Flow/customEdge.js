@@ -3,8 +3,8 @@ import { uniqueId } from '@/utils'
 const MIN_ARROW_SIZE = 3
 
 const customEdge = {
-  init() {
-    const dashArray = [
+  init() { //初始化函数
+    const dashArray = [ //线条样式数组
       [0, 1],
       [0, 2],
       [1, 2],
@@ -16,9 +16,9 @@ const customEdge = {
       [4, 2, 1, 2]
     ];
 
-    const lineDash = [4,2,1,2];
-    const interval = 9;
-    G6.registerEdge('customEdge', {
+    const lineDash = [4,2,1,2];//设置虚线样式，自定义边中的属性
+    const interval = 9;  //间隔
+    G6.registerEdge('customEdge', { //register self-defined edge
       draw(cfg, group) {
         let sourceNode, targetNode, start, end
         if (typeof (cfg.source) === 'string') {
@@ -109,7 +109,7 @@ const customEdge = {
             id: 'edge' + uniqueId(),
             path: path,
             stroke: '#b8c3ce',
-            lineAppendWidth: 10,
+            lineAppendWidth: 2,
             endArrow: {
               path: endArrowPath,
             }
@@ -142,10 +142,10 @@ const customEdge = {
         const group = item.getContainer();
         const shape = group.get("children")[0];
         const selectStyles = () => {
-          shape.attr("stroke", "#6ab7ff");
+          shape.attr("stroke", "#6ab7ff"); //have been set style
         };
         const unSelectStyles = () => {
-          shape.attr("stroke", "#b8c3ce");
+          shape.attr("stroke", "#b8c3ce");//haven't been set style
         };
 
         switch (name) {

@@ -8,6 +8,8 @@
 <script>
 import G6 from "@antv/g6/build/g6";
 import { initBehavors } from "@/behavior";
+// my add
+import datajson from "@/mock/data.json"
 export default {
   data() {
     return {
@@ -34,7 +36,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.init();
+      this.init(); //under 'this' bind to top 'this'
     });
   },
   methods: {
@@ -48,14 +50,15 @@ export default {
         width: width,
         modes: {
           // 支持的 behavior
-          default: [
+          // default: [
+          default:[
             "drag-canvas",
-            "zoom-canvas",
+            "zoom-canvas",  //bigger or smaller
             "hover-node",
-            "select-node",
+            "select-node",  //here
             "hover-edge",
             "keyboard",
-            "customer-events",
+            "customer-events",  //how about here
             "add-menu"
           ],
           mulitSelect: ["mulit-select"],
@@ -66,10 +69,17 @@ export default {
       const { editor, command } = this.$parent;
       editor.emit("afterAddPage", { graph: this.graph, command });
 
+      // 读取数据 render():渲染图
       this.readData();
     },
     readData() {
       let data = this.data;
+
+      // my add
+      if(datajson){
+        this.graph.read(datajson);
+      }
+
       if (data) {
         this.graph.read(data);
       }

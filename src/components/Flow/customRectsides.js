@@ -1,13 +1,13 @@
 import G6 from "@antv/g6/build/g6";
 import { uniqueId } from '@/utils'
 import Shape from '@antv/g/src/shapes'
-const customNode = {
+const customRectsides = {
   init() {
-    G6.registerNode("customNode", {
+    G6.registerNode("customRectsides", {
       draw(cfg, group) {
         let size = cfg.size;
         if(!size){
-          size=[170,34]
+          size=[100,50]
         }
         // 此处必须是NUMBER 不然bbox不正常
         const width = parseInt(size[0]);
@@ -16,80 +16,53 @@ const customNode = {
         // 此处必须有偏移 不然drag-node错位
         const offsetX = -width / 2
         const offsetY = -height / 2
-        const mainId = 'rect' + uniqueId()
+        const mainId = 'customRectsides' + uniqueId()
         const shape = group.addShape("rect", {
           attrs: {
             id: mainId,
-            x: offsetX,
-            y: offsetY,
+            x: 0 + offsetX,
+            y: 0 + offsetY,
             width: width,
             height: height,
             stroke: "#ced4d9",
-            fill: '#fff',//此处必须有fill 不然不能触发事件
-            radius: 4
+            fill: '#409EFF',//此处必须有fill 不然不能触发事件
+            opacity: 1,
+            radius: 0
           }
         });
 
         group.addShape("rect", {
           attrs: {
-            x: offsetX,
-            y: offsetY,
-            width: 4,
+            x: 0 + offsetX,
+            y: 0 + offsetY,
+            width: width/8,
             height: height,
-            fill: color,
+            fill: '#00ff00',
+            stroke: "#ced4d9",
             parent: mainId,
-            radius: [4, 0, 0, 4]
+            radius: 0
           }
         });
 
-        group.addShape("image", {
-          attrs: {
-            x: offsetX + 16,
-            y: offsetY + 8,
-            width: 20,
-            height: 16,
-            img: cfg.image,
-            parent: mainId
-          }
-        });
-        group.addShape("image", {
-          attrs: {
-            x: offsetX + width - 32,
-            y: offsetY + 8,
-            width: 16,
-            height: 16,
-            parent: mainId,
-            img: cfg.stateImage
-          }
-        });
-        if(cfg.backImage){
-          const clip = new Shape.Rect({
+        group.addShape("rect", {
             attrs: {
-              x: offsetX,
-              y: offsetY,
-              width: width,
+              x: width*7/8 + offsetX,
+              y: 0 + offsetY,
+              width: width/8,
               height: height,
-              fill:'#fff',
-              radius: 4
-            }
-        });
-          group.addShape("image", {
-            attrs: {
-              x: offsetX,
-              y: offsetY,
-              width: width,
-              height: height,
-              img: cfg.backImage,
-              clip: clip
+              fill: '#000',
+              stroke: "#ced4d9",
+              parent: mainId,
+              radius: 0
             }
           });
-        }
+
         if (cfg.label) {
            group.addShape("text", {
             attrs: {
               id: 'label' + uniqueId(),
-              x: offsetX + width / 2,
-              y: offsetY + height / 2,
+              x: 0,
+              y: 0,
               textAlign: "center",
               textBaseline: "middle",
               text: cfg.label,
@@ -99,48 +72,49 @@ const customNode = {
           });
         }
 
-        // draw points
+        // draw points  ,no inpoint
         if (cfg.inPoints) {
-          for (let i = 0; i < cfg.inPoints.length; i++) {
-            let x,
-              y = 0;
-            //0为顶 1为底
-            if (cfg.inPoints[i][0] === 0) {
-              y = 0;
-            } else {
-              y = height;
+            for (let i = 0; i < cfg.inPoints.length; i++) {
+              let x,
+                y = 0;
+              //0为顶 1为底
+              if (cfg.inPoints[i][0] === 0) {
+                y = 0;
+              } else {
+                y = height;
+              }
+              x = width * cfg.inPoints[i][1];
+              const id = 'circle' + uniqueId()
+              group.addShape("circle", {
+                attrs: {
+                  id: 'circle' + uniqueId(),
+                  // my add
+                  idType: 0,
+                  // my add
+                  parent: id,
+                  x: x + offsetX,
+                  y: y + offsetY,
+                  r: 10,
+                  isInPointOut: true,
+                  fill: "#1890ff",
+                  opacity: 0
+                }
+              });
+              group.addShape("circle", {
+                attrs: {
+                  id: id,
+                  x: x + offsetX,
+                  y: y + offsetY,
+                  r: 3,
+                  isInPoint: true,
+                  fill: "#fff",
+                  stroke: "#1890ff",
+                  opacity: 0
+                }
+              });
             }
-            x = width * cfg.inPoints[i][1];
-            const id = 'circle' + uniqueId()
-            group.addShape("circle", {
-              attrs: {
-                id: 'circle' + uniqueId(),
-                // my add
-                idType: 0,
-                // my add
-                parent: id,
-                x: x + offsetX,
-                y: y + offsetY,
-                r: 10,
-                isInPointOut: true,
-                fill: "#1890ff",
-                opacity: 0
-              }
-            });
-            group.addShape("circle", {
-              attrs: {
-                id: id,
-                x: x + offsetX,
-                y: y + offsetY,
-                r: 3,
-                isInPoint: true,
-                fill: "#fff",
-                stroke: "#1890ff",
-                opacity: 0
-              }
-            });
           }
-        }
+
         if (cfg.outPoints) {
           for (let i = 0; i < cfg.outPoints.length; i++) {
             let x,
@@ -172,7 +146,7 @@ const customNode = {
                 y: y + offsetY,
                 r: 3,
                 isOutPoint: true,
-                fill: "#fff",
+                fill: "#f00",
                 stroke: "#1890ff",
                 opacity: 0
               }
@@ -202,14 +176,14 @@ const customNode = {
             child.attr("cursor", "move");
           });
           circles.forEach(circle => {
-            circle.attr('opacity', 1)
+            circle.attr('opacity', 0.5)
           })
         };
         const unSelectStyles = () => {
-          shape.attr("fill", "#fff");
-          shape.attr("stroke", "#ced4d9");
+          shape.attr("fill", "#E6A23C");
+          shape.attr("stroke", "#ced4dd");
           circles.forEach(circle => {
-            circle.attr('opacity', 0)
+            circle.attr('opacity', 0.5)
           })
         };
         switch (name) {
@@ -227,4 +201,4 @@ const customNode = {
   }
 }
 
-export default customNode
+export default customRectsides

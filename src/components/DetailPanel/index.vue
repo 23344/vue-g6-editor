@@ -1,21 +1,53 @@
 <template>
   <div class="detailpannel">
     <div>
+      <!-- the word should be "panel" -->
       <div v-if="status=='node-selected'" class="pannel" id="node_detailpannel">
         <div class="pannel-title">模型详情</div>
         <div class="block-container">
           <el-row :gutter="10">
             <el-col :span="8">名称</el-col>
             <el-col :span="16">
-              <el-input v-model="node.label" @change="handleChangeName" />
+              <el-input v-model="node.label" @input="handleChangeName" />
             </el-col>
-            <el-col :span="8">任意属性</el-col>
+            <!-- <el-col :span="8">任意属性</el-col>
             <el-col :span="16">
               <el-input v-model="node.xxx" />
+            </el-col> -->
+          </el-row>
+
+          <el-row :gutter="10">
+            <el-col :span="8">颜色</el-col>
+            <el-col :span="16">
+              <div class="block">
+                  <el-color-picker v-model="color1" size="small" @change="handleChangeColor"></el-color-picker>
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="10">
+            <el-col :span="8">形状</el-col>
+            <el-col :span="16">
+              <el-select v-model="node.shape" placeholder="请选择" @change="handleChangeShape(item.value)">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="10">
+            <el-col :span="8">背景图片</el-col>
+            <el-col :span="16">
+              <el-input v-model="node.label" @change="handleChangeName" />
             </el-col>
           </el-row>
         </div>
       </div>
+
       <div v-if="status==='canvas-selected'" class="pannel" id="canvas_detailpannel">
         <div class="pannel-title">画布</div>
         <div class="block-container">
@@ -52,7 +84,19 @@ export default {
       graph: {},
       item: {},
       node: {},
-      grid: null
+      grid: null,
+      color1: '#409EF',
+      options: [
+        {value: 'circle',label: 'circle'}, 
+        {value: 'rect',label: 'rect'}, 
+        {value: 'ellipse',label: 'ellipse'}, 
+        {value: 'fan',label: 'fan'}, 
+        {value: 'triangle',label: 'triangle'}, 
+        {value: 'star',label: 'star'}, 
+        {value: 'image',label: 'image'}, 
+        {value: 'customNode',label: 'customNode'}
+        ]
+      // value: ''
     };
   },
   created() {
@@ -63,14 +107,21 @@ export default {
     init() {},
     bindEvent() {
       let self = this;
+      // listen event  afterAddPage from page/index.vue $emit
+      // $on listen examples(object) self-defined function from $emit
       eventBus.$on("afterAddPage", page => {
         self.page = page;
         self.graph = self.page.graph;
+        // console.log("this.page is :"+self.page);
+        // nodeselectchange come frome behaviers/select-node.js
+        // item's parameter are select & target
         eventBus.$on("nodeselectchange", item => {
           if (item.select === true && item.target.getType() === "node") {
             self.status = "node-selected";
             self.item = item.target;
-            self.node = item.target.getModel();
+            console.log("item.target:"+item.target);
+            self.node = item.target.getModel();  //what's node.
+            console.log("self.node:"+self.node);
           } else {
             self.status = "canvas-selected";
             self.item = null;
@@ -83,9 +134,28 @@ export default {
       const model = {
         label: e
       };
+      this.graph.update(this.item, model);
+    },
+    // my add
+    handleChangeColor(e) {
+      console.log("current fill is :"+e);
+      const model = {
+        style:{
+          fill:e
+        }
+      };
 
       this.graph.update(this.item, model);
     },
+    handleChangeShape(e) {
+      console.log("shape is:"+e);
+      const model = {
+        shape: e
+      };
+
+      this.graph.update(this.item, model);
+    },
+    // paint nine grid in g6
     changeGridState(value) {
       if (value) {
         this.grid = new Grid();
@@ -126,4 +196,13 @@ export default {
   line-height: 28px;
   padding-left: 12px;
 }
+
+/* my-add */
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>

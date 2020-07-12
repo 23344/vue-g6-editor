@@ -1,13 +1,13 @@
 import G6 from "@antv/g6/build/g6";
 import { uniqueId } from '@/utils'
 import Shape from '@antv/g/src/shapes'
-const customNode = {
+const customParallel = {
   init() {
-    G6.registerNode("customNode", {
+    G6.registerNode("customParallel", {
       draw(cfg, group) {
         let size = cfg.size;
         if(!size){
-          size=[170,34]
+          size=[100, 50]
         }
         // 此处必须是NUMBER 不然bbox不正常
         const width = parseInt(size[0]);
@@ -16,74 +16,29 @@ const customNode = {
         // 此处必须有偏移 不然drag-node错位
         const offsetX = -width / 2
         const offsetY = -height / 2
-        const mainId = 'rect' + uniqueId()
-        const shape = group.addShape("rect", {
+        const mainId = 'customParallel' + uniqueId()
+        const shape = group.addShape("polygon", {
           attrs: {
             id: mainId,
             x: offsetX,
             y: offsetY,
-            width: width,
-            height: height,
+            points:[[offsetX+width/4, offsetY ], [width/2, offsetY], [width/4, -offsetY], [offsetX, -offsetY]],
+            fill: '#ff0000',//此处必须有fill 不然不能触发事件
             stroke: "#ced4d9",
-            fill: '#fff',//此处必须有fill 不然不能触发事件
-            radius: 4
           }
         });
 
-        group.addShape("rect", {
+        group.addShape("polygon", {
           attrs: {
             x: offsetX,
             y: offsetY,
-            width: 4,
-            height: height,
-            fill: color,
-            parent: mainId,
-            radius: [4, 0, 0, 4]
-          }
-        });
-
-        group.addShape("image", {
-          attrs: {
-            x: offsetX + 16,
-            y: offsetY + 8,
-            width: 20,
-            height: 16,
-            img: cfg.image,
+            points:[[offsetX+width/4, offsetY ], [width/2, offsetY], [width/4, -offsetY], [offsetX, -offsetY]],
+            fill: '#F56C6C',//此处必须有fill 不然不能触发事件
+            stroke: "#00ff00",
             parent: mainId
           }
         });
-        group.addShape("image", {
-          attrs: {
-            x: offsetX + width - 32,
-            y: offsetY + 8,
-            width: 16,
-            height: 16,
-            parent: mainId,
-            img: cfg.stateImage
-          }
-        });
-        if(cfg.backImage){
-          const clip = new Shape.Rect({
-            attrs: {
-              x: offsetX,
-              y: offsetY,
-              width: width,
-              height: height,
-              fill:'#fff',
-              radius: 4
-            }
-        });
-          group.addShape("image", {
-            attrs: {
-              x: offsetX,
-              y: offsetY,
-              width: width,
-              height: height,
-              img: cfg.backImage,
-              clip: clip
-            }
-          });
-        }
+
         if (cfg.label) {
            group.addShape("text", {
             attrs: {
@@ -227,4 +182,4 @@ const customNode = {
   }
 }
 
-export default customNode
+export default customParallel

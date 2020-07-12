@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// 引入minimap插件
 import Minimap from "@antv/g6/build/minimap";
 import eventBus from "@/utils/eventBus";
 export default {

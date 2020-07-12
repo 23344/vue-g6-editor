@@ -1,6 +1,6 @@
 
 import Util from '@antv/g6/src/util'
-import eventBus from "@/utils/eventBus";
+import eventBus from "@/utils/eventBus";  //emit to here
 export default {
     getDefaultCfg() {
         return {
@@ -35,6 +35,7 @@ export default {
                 }
             });
         }
+        // item be clicked (select)
         if (item.hasState('selected')) {
             if (self.shouldUpdate.call(self, e)) {
                 graph.setItemState(item, 'selected', false);

@@ -147,6 +147,7 @@ export default {
         this.command.executeCommand("update", [item]);
       });
       eventBus.$on("addItem", item => {
+        console.log('did i execute the addItem function?here');
         this.command.executeCommand("add", [item]);
       });
       eventBus.$on("nodeselectchange", () => {

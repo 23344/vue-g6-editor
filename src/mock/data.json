@@ -1,0 +1,45 @@
+{
+    "nodes": [
+      {
+        "id": "fec00d19",
+        "name": "知识点",
+        "label": "知识点",
+        "type": "node",
+        "x": 450,
+        "y": 60,
+        "shape": "customRect",
+        "color": "#1890ff",
+        "outPoints": [[1, 0.5]],
+        "isDoingEnd": true
+      },
+      {
+        "id": "ffc5d5bc",
+        "x": 597.5,
+        "y": 81.5,
+        "name": "customRectsides",
+        "type": "end",
+        "label": "结束",
+        "shape": "customRectsides"
+      }
+    ],
+    "edges": [
+      {
+        "id": "91446a68",
+        "shape": "BaseEdge",
+        "source": "fec00d19",
+        "target": "abc16436",
+        "sourceAnchor": 1,
+        "targetAnchor": 0
+      },
+      {
+        "id": "08a821fd",
+        "shape": "BaseEdge",
+        "source": "abc16436",
+        "target": "ffc5d5bc",
+        "sourceAnchor": 1,
+        "targetAnchor": 0
+      }
+    ],
+    "groups": []
+  }
+  

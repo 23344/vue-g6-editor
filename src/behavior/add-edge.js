@@ -15,7 +15,9 @@ export default {
             'node:mouseleave': 'onMouseleave'
         };
     },
+    // put target egde   e:page.mouseupItem?
     onMouseup(e) {
+        console.log("on mouse up here.");
         const item = e.item
         if (item && item.getType() === 'node') {
             const group = item.getContainer()
@@ -26,11 +28,17 @@ export default {
                         activeItem = child
                     }
                 })
+                
                 curInPoint = e.target
             } else if (e.target._attrs.isInPointOut) {
+                console.log('hahaha-else'); //run here
                 activeItem = e.target
                 const children = group._cfg.children
                 children.map(child => {
+                    // console.log('child._attrs.isInPoint ='+child._attrs.isInPoint);
+                    // console.log('child._attrs.id ='+child._attrs.id);
+                    // console.log('e.target._attrs.parent ='+e.target._attrs.parent);
+                    // console.log('e.target._attrs.label ='+e.target._attrs.label);
                     if (child._attrs.isInPoint && child._attrs.id === e.target._attrs.parent) {
                         curInPoint = child
                     }
@@ -39,21 +47,38 @@ export default {
             if (activeItem) {
                 const endX = parseInt(curInPoint._attrs.x)
                 const endY = parseInt(curInPoint._attrs.y)
-                endPoint = { x: endX, y: endY };
+                endPoint = { x: endX, y: endY }; //end point position
                 if (this.edge) {
-                    this.graph.removeItem(this.edge);
-                    const model = {
-                        id: 'edge' + uniqueId(),
-                        source: startItem,
-                        target: item,
-                        sourceId: startItem._cfg.id,
-                        targetId: item._cfg.id,
-                        start: startPoint,
-                        end: endPoint,
-                        shape: 'customEdge',
-                        type: 'edge'
+                    console.log('sourceId is :'+startItem._cfg.id); //is change
+                    console.log('targetId is :'+item._cfg.id);  //is change
+                    // console.log('source name is :'+startItem.node.name);
+                    console.log('target name is :'+item.name);
+                    if(startItem._cfg.id==8){
+
+                    }else{
+                        this.graph.removeItem(this.edge);
+                        console.log('');
+                        const model = {
+                            id: 'edge' + uniqueId(),
+                            source: startItem,
+                            target: item,
+                            sourceId: startItem._cfg.id,
+                            targetId: item._cfg.id,
+                            start: startPoint,
+                            end: endPoint,
+                            shape: 'customEdge',
+                            // shape:'line',   //my add
+                            type: 'edge',
+                            // my add
+                            // style:{
+                            //     stroke:'#ff0000',
+                            //     lineWidth:2
+                            // }
+                        }
+                        eventBus.$emit('addItem', model)
                     }
-                    eventBus.$emit('addItem', model)
+                    // console.log('the color is:'+model.style.stroke);
+                    
                 }
             } else {
                 if (this.edge)
@@ -92,6 +117,7 @@ export default {
         this.graph.setMode('default')
     },
     onMousemove(e) {
+        console.log("on mouse move here.");
         const item = e.item
         if (!startPoint) {
             this.graph.find("node", node => {
@@ -129,6 +155,7 @@ export default {
         }
     },
     onMouseover(e) {
+        console.log("on mouse over here.");
         const item = e.item
         if (item && item.getType() === 'node') {
             if (e.target._attrs.isInPointOut && !this.hasTran) {
@@ -142,6 +169,7 @@ export default {
         }
     },
     onMouseleave() {
+        console.log("on mouse leave here.");
         this.graph.find("node", node => {
             const group = node.get('group')
             const children = group._cfg.children

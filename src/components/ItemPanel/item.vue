@@ -11,7 +11,13 @@
       @dragstart="handleDragstart"
       @dragend="handleDragEnd($event,item)"
     >
-      <span class="pannel-type-icon" :style="{background:'url('+item.image+')'}"></span>
+      <div class="pannel-type-icon">
+        <el-image :src="item.image">
+        </el-image>
+      </div>
+
+      <!-- <span class="pannel-type-icon" :style="{background:'url('+item.image+')'}"></span> -->
+  
       {{item.name}}
     </li>
   </ul>
@@ -21,6 +27,8 @@
 import eventBus from "@/utils/eventBus";
 import okSvg from "@/assets/icons/ok.svg";
 import bgImg from "@/assets/bg.jpg";
+import rectdown from "@/assets/rectdown.png"
+
 export default {
   data() {
     return {
@@ -30,97 +38,110 @@ export default {
       offsetY: 0,
       list: [
         {
-          name: "测试节点",
-          label: "测试节点",
-          size: "170*34",
+          name: "外部操作",
+          label: "外部操作",
+          size: "100*50",
           type: "node",
           x: 0,
           y: 0,
-          shape: "customNode",
+          image: "https://ae01.alicdn.com/kf/H52d89669466149a5a7d2852d6365dbc19.jpg",
+          rectdown: true,
+          shape: "customRectdown",
           color: "#1890ff",
-          image:
-            "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-          stateImage: okSvg,
           inPoints: [[0, 0.5]],
           outPoints: [[1, 0.5]]
         },
 
         {
-          name: "背景图片节点",
-          label: "背景图片节点",
-          size: "170*34",
+          name: "变量值",
+          label: "变量值",
+          size: "100*50",
           type: "node",
           x: 0,
           y: 0,
-          shape: "customNode",
+          image: "https://ae01.alicdn.com/kf/H28ed0a772db1446abc4a250a28de217fB.jpg",
+          shape: "customParallel",
           color: "#1890ff",
-          image:
-            "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-          stateImage: okSvg,
-          backImage: bgImg,
           inPoints: [[0, 0.5]],
           outPoints: [[1, 0.5]]
         },
         {
-          name: "双输出节点",
-          label: "双输出节点",
-          size: "170*34",
+          name: "变量定义",
+          label: "变量定义",
+          size: "100*50",
           type: "node",
           x: 0,
           y: 0,
-          shape: "customNode",
+          image: "https://ae01.alicdn.com/kf/Hd2fbba3bfdb34260a910b050db893418o.jpg",
+          shape: "customHexagon",
           color: "#1890ff",
-          image:
-            "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-          stateImage: okSvg,
-          inPoints: [[0, 0.5]],
-          outPoints: [[1, 0.4], [1, 0.6]]
-        },
-        {
-          name: "大型节点",
-          label: "大型节点",
-          size: "340*34",
-          type: "node",
-          x: 0,
-          y: 0,
-          shape: "customNode",
-          color: "#1890ff",
-          image:
-            "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-          stateImage: okSvg,
           inPoints: [[0, 0.5]],
           outPoints: [[1, 0.5]]
         },
         {
-          name: "动画开始节点",
-          label: "动画开始",
-          size: "170*34",
+          name: "变量引用",
+          label: "变量引用",
+          size: "100*50",
           type: "node",
           x: 0,
           y: 0,
-          shape: "customNode",
+          image: "https://ae01.alicdn.com/kf/Hc3a12886495d4e36b746ff3adc72a81fd.jpg",
+          shape: "customEllipse",
           color: "#1890ff",
-          image:
-            "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-          stateImage: okSvg,
           inPoints: [[0, 0.5]],
-          outPoints: [[1, 0.5]],
-          isDoingStart: true
+          outPoints: [[1, 0.5]]
         },
         {
-          name: "动画结束节点",
-          label: "动画结束",
-          size: "170*34",
+          name: "分支节点",
+          label: "分支节点",
+          size: "80*80",
           type: "node",
           x: 0,
           y: 0,
-          shape: "customNode",
+          image: "https://ae01.alicdn.com/kf/H791c91981a4943019e5a76df7ee30cc16.jpg",
+          shape: "customDiamond",
           color: "#1890ff",
-          image:
-            "https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg",
-          stateImage: okSvg,
           inPoints: [[0, 0.5]],
           outPoints: [[1, 0.5]],
+          // isDoingEnd: true
+        },
+        {
+          name: "知识点",
+          label: "知识点",
+          size: "100*50",
+          type: "node",
+          x: 0,
+          y: 0,
+          shape: "customRect",
+          color: "#409EFF",
+          inPoints: [[0, 0.5]],
+          outPoints: [[1, 0.5]],
+          isDoingEnd: true
+        },
+        {
+          name: "变量采集",
+          label: "变量采集",
+          size: "100*50",
+          type: "node",
+          x: 0,
+          y: 0,
+          image: "https://ae01.alicdn.com/kf/H84bd7f92ca6a45888ebf22cc8ce03a4fB.jpg",
+          shape: "customRectsides",
+          color: "#409EFF",
+          inPoints: [[0, 0.5]],
+          outPoints: [[1, 0.5]],
+        },
+        {
+          name: "答案定义",
+          label: "答案定义",
+          size: "100*50",
+          type: "node",
+          x: 0,
+          y: 0,
+          image: "https://ae01.alicdn.com/kf/H0e6b3260f5664faa90f31a889577220e2.jpg",
+          shape: "customRectleft",
+          color: "#409EFF",
+          inPoints: [[0, 0.5]],
           isDoingEnd: true
         }
       ]
@@ -136,6 +157,7 @@ export default {
     },
     handleDragEnd(e, item) {
       let data = {};
+      // typescript: assign(target,source1,source2,..)
       Object.assign(data, item);
       data.offsetX = this.offsetX;
       data.offsetY = this.offsetY;
@@ -173,17 +195,22 @@ export default {
 }
 .itempannel ul {
   padding: 0px;
-  padding-left: 16px;
+  /* padding-left: 16px; */
 }
 .itempannel li {
   color: rgba(0, 0, 0, 0.65);
-  border-radius: 4px;
-  width: 160px;
-  height: 28px;
+  /* border-radius: 4px; */
+  float: left;
+  width: 50%;
+  height: 50%;
   line-height: 26px;
-  padding-left: 8px;
+  margin-left: -16px;
+  margin-right: 14px;
+  /* padding-left: 8px; */
   border: 1px solid rgba(0, 0, 0, 0);
   list-style-type: none;
+  /* my add */
+  display: block;
 }
 .itempannel li:hover {
   background: white;
@@ -192,10 +219,10 @@ export default {
 }
 
 .itempannel .pannel-type-icon {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
+  width: 78px;
+  height: 78px;
+  display: block;
+  /* vertical-align: middle; */
+  /* margin-right: 8px; */
 }
 </style>

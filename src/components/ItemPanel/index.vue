@@ -1,14 +1,22 @@
 <template>
   <div class="itempannel">
-    <Item />
+      <el-tabs type="border-card">
+        <el-tab-pane label="对象">
+          <Item />
+        </el-tab-pane>
+        <el-tab-pane label="全局变量">
+          <GlobalItem />
+        </el-tab-pane>
+      </el-tabs>
   </div>
 </template>
 
 <script>
 import Item from "./item";
+import GlobalItem from "./globalitem"
 import eventBus from "@/utils/eventBus";
 export default {
-  components: { Item },
+  components: { Item, GlobalItem },
   data() {
     return {
       page: null,

@@ -1,5 +1,5 @@
 <template>
-  <div id="mountNode" :style="{width:width}">
+  <div id="mountNode" :ref="editor" :style="{width:width}">
     <div class="editor" >
       <context-menu />
       <!--toolbar-->
@@ -30,6 +30,7 @@ import Flow from "../Flow"
 import ContextMenu from "../ContextMenu";
 import Editor from "@/components/Base/Editor";
 import command from "@/command";
+
 export default {
   name: "G6Editor",
   components: {
@@ -51,7 +52,8 @@ export default {
       default: document.documentElement.clientWidth
     },
     data: {
-      type: Object,
+      // type: Object,
+      type:Object,
       default: () => {}
     }
   },
@@ -61,7 +63,7 @@ export default {
   data() {
     return {
       editor: {},
-      command: null
+      command: null,
     };
   },
   methods: {
